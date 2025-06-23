@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mcp-with-express": {
+      "command": "/Users/mac-snp-01/.nvm/versions/node/v20.9.0/bin/node",
+      "args": ["/Users/mac-snp-01/Development/mcp-server-node/mcp-server.js"],
+      "env": {
+        "SERVER_NAME": "mcp-with-express"
+      }
+    }
+  }
+}

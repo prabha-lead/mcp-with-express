@@ -1,0 +1,45 @@
+# Ignore dependencies and package manager files
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Ignore environment variable files
+.env
+
+# Ignore build outputs and coverage reports
+dist/
+build/
+coverage/
+
+# Ignore IDE and editor configuration files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Ignore log files
+logs
+*.log
+
+# Ignore optional npm cache directory
+.npm
+
+# Ignore optional eslint cache
+.eslintcache
+
+# Ignore optional Node.js REPL history
+.node_repl_history
+
+# Ignore output of 'npm pack' command
+*.tgz
+
+# Ignore miscellaneous temporary files and directories
+.cache/
+.temp/
+.tmp/
+tmp/
+temp/
