@@ -194,6 +194,104 @@ This allows the MCP integration to work across all Cursor projects.
 
 ---
 
+### 🧰 MCP Server Setup & Tool Configuration Guide
+
+This guide walks through the setup of the `mcp-with-express` MCP server and how we define tools that plug into Cursor (or other MCP-compatible AI environments).
+
+---
+
+### 🚀 MCP Server Initialization
+
+```ts
+const server = new McpServer({
+  name: "mcp-with-express",
+  version: "1.0.0",
+});
+```
+
+This creates an MCP server instance with a name and version. It’s how Cursor knows what this server is called.
+
+---
+
+## 🛠️ Defining Tools with `server.tool(...)`
+
+The `server.tool` function is how you expose callable tools (functions) to the AI.
+
+### Syntax
+
+```ts
+server.tool(name, description, inputSchema, handler);
+```
+
+| Argument      | Type        | Description                             |
+| ------------- | ----------- | --------------------------------------- |
+| `name`        | `string`    | Name of the tool exposed to MCP         |
+| `description` | `string`    | Short description of what the tool does |
+| `inputSchema` | `ZodSchema` | Defines the shape of the input data     |
+| `handler`     | `Function`  | Async function that processes the input |
+
+---
+
+### 🧪 Example: `getServerName`
+
+```ts
+server.tool("getServerName", "Get the server name", {}, async () => ({
+  content: [
+    { type: "text", text: process.env.SERVER_NAME || "No server name set" },
+  ],
+}));
+```
+
+- ✅ No input needed
+- 📦 Reads `SERVER_NAME` from environment
+- 📤 Returns it as text content
+
+---
+
+### 🌦️ Example: `getWeatherByCity`
+
+```ts
+server.tool(
+  "getWeatherByCity",
+  "Get weather by city name",
+  { city: z.string() },
+  async ({ city }) => {
+    const response = await fetch(`http://localhost:4000/api/weather?city=${encodeURIComponent(city)}`)
+    ...
+  }
+)
+```
+
+- ✅ Accepts a `city` name
+- 🔁 Calls your **Express API** at `http://localhost:4000/api/weather`
+- 📦 Returns a human-friendly weather string
+
+This demonstrates how you can **wrap existing APIs in tools** — clean separation of tool logic and data retrieval.
+
+---
+
+## 🔌 Connecting MCP to Cursor via Stdio
+
+```ts
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+This tells the MCP server to communicate using standard input/output — the format Cursor understands.
+
+---
+
+## 💡 TL;DR
+
+- Define tools with `server.tool(...)`
+- Wrap external or internal APIs in a clean, async interface
+- Use Zod for input validation
+- Connect with `StdioServerTransport` for Cursor integration
+
+---
+
+Happy MCP’ing! 😎
+
 ## References
 
 - [Model Context Protocol Introduction](https://modelcontextprotocol.io/introduction)
